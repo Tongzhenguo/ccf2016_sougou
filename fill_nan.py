@@ -1,17 +1,12 @@
 '''1.concat train data and test data 
    2.use lr to fill null label'''
 
-import pandas as pd
-import numpy as np
 import jieba
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.cross_validation import StratifiedShuffleSplit,StratifiedKFold,cross_val_score
+import numpy as np
+import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import MultinomialNB,BernoulliNB,GaussianNB
-import pickle
+from sklearn.linear_model import LogisticRegression
+
 import cfg
 
 #----------------------load data--------------------------------
@@ -66,7 +61,7 @@ class Tokenizer():
             print(self.n,end=' ')
         return tokens    
 
-tfv = TfidfVectorizer(tokenizer=Tokenizer(),min_df=3,max_df=0.95,sublinear_tf=True)
+tfv = TfidfVectorizer(tokenizer=Tokenizer(),min_df=3,max_df=0.95,sublinear_tf=True) #sublinear_tf/对数转换：1 + log(tf)
 X_sp = tfv.fit_transform(df_all['query'])
 # pickle.dump(X_sp,open(root + 'tfidf_10W.pkl','wb'))
 print(len(tfv.vocabulary_))
@@ -74,9 +69,9 @@ X_all = X_sp
 
 #-----------------------------fill nan-------------------------------------
 '''填充空值'''
-for lb,idx in [('Education',0),('age',2),('gender',3)]:
-    tr = np.where(df_all[lb]!=-1)[0]
-    va = np.where(df_all[lb]==-1)[0]
+# for lb,idx in [('Education',0),('age',2),('gender',3)]:
+#     tr = np.where(df_all[lb]!=-1)[0]
+#     va = np.where(df_all[lb]==-1)[0]
 lb = 'Education'
 idx = 0
 tr = np.where(df_all[lb]!=-1)[0]
@@ -96,4 +91,4 @@ va = np.where(df_all[lb]==-1)[0]
 df_all.iloc[va,idx] = LogisticRegression(C=2).fit(X_all[tr],df_all.iloc[tr,idx]).predict(X_all[va])
 
 df_all = pd.concat([df_all,df_te]).fillna(0)
-df_all.to_csv(cfg.data_path + 'all_v2.csv',index=None)
+df_all.to_csv(cfg.data_path + 'all_v2.csv',index=None,encoding='utf8')

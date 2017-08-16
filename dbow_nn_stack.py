@@ -7,6 +7,10 @@ from sklearn.cross_validation import KFold
 from gensim.models import Doc2Vec
 from collections import OrderedDict
 
+import os
+os.environ['KERAS_BACKEND'] = 'theano'
+import keras.backend as K
+K.set_image_dim_ordering('th')
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
@@ -72,7 +76,7 @@ for i,lb in enumerate(['Education','age','gender']):
                       metrics=['accuracy'])
 
         history = model.fit(X_train, Y_train,shuffle=True,
-                            batch_size=128, nb_epoch=35,
+                            batch_size=128, nb_epoch=1,
                             verbose=2, validation_data=(X_test, Y_test))
         y_pred_va = model.predict_proba(X[va])
         y_pred_te = model.predict_proba(X_te)
