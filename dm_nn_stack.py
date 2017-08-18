@@ -7,10 +7,10 @@ from sklearn.cross_validation import KFold
 from gensim.models import Doc2Vec
 from collections import OrderedDict
 
-import os
-os.environ['KERAS_BACKEND'] = 'theano'
-import keras.backend as K
-K.set_image_dim_ordering('th')
+# import os
+# os.environ['KERAS_BACKEND'] = 'theano'
+# import keras.backend as K
+# K.set_image_dim_ordering('th')
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation

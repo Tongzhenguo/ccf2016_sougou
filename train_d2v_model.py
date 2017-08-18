@@ -60,15 +60,13 @@ for lb in ['Education', 'age', 'gender']:
 d2v = Doc2Vec(dm=0, size=300, negative=5, hs=0, min_count=3, window=30,sample=1e-5,workers=8,alpha=0.025,min_alpha=0.025)
 doc_list = Doc_list('alldata-id.txt')
 d2v.build_vocab(doc_list)
-for i in range(2):
-    print(datetime.now(),'pass:',i + 1)
-    run_cmd('shuf alldata-id.txt > alldata-id-shuf.txt')
-    doc_list = Doc_list('alldata-id.txt')
-    d2v.train(doc_list,total_examples=200000,epochs=1)
-    X_d2v = np.array([d2v.docvecs[i] for i in range(200000)])
-    for lb in ["Education",'age','gender']:
-        scores = cross_val_score(LogisticRegression(C=3),X_d2v,ys[lb],cv=5)
-        print('dbow',lb,scores,np.mean(scores))
+run_cmd('shuf alldata-id.txt > alldata-id-shuf.txt')
+doc_list = Doc_list('alldata-id.txt')
+d2v.train(doc_list,total_examples=200000,epochs=1)
+X_d2v = np.array([d2v.docvecs[i] for i in range(200000)])
+for lb in ["Education",'age','gender']:
+    scores = cross_val_score(LogisticRegression(C=3),X_d2v,ys[lb],cv=5)
+    print('dbow',lb,scores,np.mean(scores))
 d2v.save(cfg.data_path + 'dbow_d2v.model')
 print(datetime.now(),'save done')
 
@@ -77,14 +75,12 @@ d2v = Doc2Vec(dm=1, size=300, negative=5, hs=0, min_count=3, window=10,sample=1e
 doc_list = Doc_list('alldata-id.txt')
 d2v.build_vocab(doc_list)
 
-for i in range(10):
-    print(datetime.now(),'pass:',i)
-    run_cmd('shuf alldata-id.txt > alldata-id-shuf.txt')
-    doc_list = Doc_list('alldata-id.txt')
-    d2v.train(doc_list,total_examples=200000,epochs=1)
-    X_d2v = np.array([d2v.docvecs[i] for i in range(200000)])
-    for lb in ["Education",'age','gender']:
-        scores = cross_val_score(LogisticRegression(C=3),X_d2v,ys[lb],cv=5)
-        print('dm',lb,scores,np.mean(scores))
+run_cmd('shuf alldata-id.txt > alldata-id-shuf.txt')
+doc_list = Doc_list('alldata-id.txt')
+d2v.train(doc_list,total_examples=200000,epochs=1)
+X_d2v = np.array([d2v.docvecs[i] for i in range(200000)])
+for lb in ["Education",'age','gender']:
+    scores = cross_val_score(LogisticRegression(C=3),X_d2v,ys[lb],cv=5)
+    print('dm',lb,scores,np.mean(scores))
 d2v.save(cfg.data_path + 'dm_d2v.model')
 print(datetime.now(),'save done')

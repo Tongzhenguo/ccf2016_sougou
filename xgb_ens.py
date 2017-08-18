@@ -1,3 +1,4 @@
+# coding=utf-8
 '''xgb-ens for education/age/gender'''
 
 import pandas as pd
