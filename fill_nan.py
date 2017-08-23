@@ -58,7 +58,7 @@ class Tokenizer():
             print(tokens)
         self.n += 1
         if self.n%10000==0:
-            print(self.n,end=' ')
+            print(self.n)
         return tokens    
 
 tfv = TfidfVectorizer(tokenizer=Tokenizer(),min_df=3,max_df=0.95,sublinear_tf=True) #sublinear_tf/对数转换：1 + log(tf)

@@ -1,3 +1,4 @@
+# coding=utf-8
 '''train dbow/dm for education/age/gender'''
 
 import codecs
@@ -84,3 +85,19 @@ for lb in ["Education",'age','gender']:
     print('dm',lb,scores,np.mean(scores))
 d2v.save(cfg.data_path + 'dm_d2v.model')
 print(datetime.now(),'save done')
+
+###测试文本相似度
+# path = 'data/'
+# df_all = pd.read_csv(path + 'all_v2.csv')
+# model = Doc2Vec.load(path + 'dm_d2v.model')
+# X_sp = np.array([model.docvecs[i] for i in range(len(df_all))])
+# sims = model.docvecs.most_similar([X_sp[10]], topn=10) #cosine similarity
+# for d in sims:
+#     print( df_all.iloc[d[0]] )
+#     print d[1]
+# model = Doc2Vec.load(path + 'dbow_d2v.model')
+# X_sp = np.array([model.docvecs[i] for i in range(len(df_all))])
+# sims = model.docvecs.most_similar([X_sp[10]], topn=10) #cosine similarity
+# for d in sims:
+#     print( df_all.iloc[d[0]] )
+#     print d[1]
